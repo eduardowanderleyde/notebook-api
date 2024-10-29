@@ -1,13 +1,15 @@
 class Contact < ApplicationRecord
-  belongs_to :kind #,optional: true
+  belongs_to :kind #, optional: true
+  has_many :phones
 
-  def birthdate_br
-    # Convertendo a string para um objeto Date antes de usar I18n
-    I18n.l(self.birthdate.to_date) unless self.birthdate.blank?
-  rescue ArgumentError
-    # Retorna nil se a conversão falhar
-    nil
+  def as_json(options = {})
+  h = super(options)
+  if self.birthdate.present?
+    h[:birthdate] = I18n.l(self.birthdate.to_date) rescue self.birthdate
   end
+  h
+end
+
 
   # def author
   #  "Eduardo"

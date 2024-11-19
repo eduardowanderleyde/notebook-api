@@ -2,6 +2,7 @@ namespace :dev do
   desc "Setup development environment"
   task setup: :environment do
     puts("Reset the database...")
+
     %x(rails db:drop db:create db:migrate)
 
     puts "Creating contact types..."
@@ -14,7 +15,7 @@ namespace :dev do
     puts "Creating contacts types..."
 
     100.times do |i|
-      contact = Contact.create!(
+      Contact.create!(
         name: Faker::Name.name,
         email: Faker::Internet.email,
         birthdate: Faker::Date.between(from: '1970-01-01', to: '2000-12-31').to_s,
@@ -39,7 +40,7 @@ namespace :dev do
     puts "Creating Address..."
 
     Contact.all.each do |contact|
-      address = Address.create(
+      Address.create(
         street:Faker::Address.street_address,
         city:Faker::Address.city,
         contact: contact
